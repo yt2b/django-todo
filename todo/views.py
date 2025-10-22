@@ -27,7 +27,6 @@ class TaskListView(LoginRequiredMixin, TemplateView):
 class TaskToggleView(View):
     def post(self, request, *args, **kwargs):
         task = Task.objects.get(id=kwargs["id"])
-        print(task)
         task.completed = not task.completed
         task.save()
         return redirect("index")
