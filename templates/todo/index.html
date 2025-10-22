@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}TODOアプリ{% endblock %}
+{% block title %}TODOリスト{% endblock %}
 
 {% block content %}
-    <h2>Hello, {{ user.username }}</h2>
+    <h2>{{ user.username }} のTODOリスト</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="新しいタスク" required>
+        <button type="submit">追加</button>
+    </form>
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <span>{{ task.title }}</span>
+            <form action="{% url 'toggle' task.id %}" style="display: inline;" method="post">
+                {% csrf_token %}
+                <button type="submit">{% if task.completed %}未完了{% else %}完了{% endif %}</button>
+            </form>
+            <form action="{% url 'delete' task.id %}" style="display: inline;" method="post">
+                {% csrf_token %}
+                <button type="submit">削除</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <hr />
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit">ログアウト</button>
