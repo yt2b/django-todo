@@ -12,10 +12,10 @@
     <ul>
         {% for task in tasks %}
         <li>
-            <span>{{ task.title }}</span>
+            <span class="{% if task.completed %}completed{% endif %}">{{ task.title }}</span>
             <form action="{% url 'toggle' task.id %}" style="display: inline;" method="post">
                 {% csrf_token %}
-                <button type="submit">{% if task.completed %}未完了{% else %}完了{% endif %}</button>
+                <button type="submit">✔</button>
             </form>
             <form action="{% url 'delete' task.id %}" style="display: inline;" method="post">
                 {% csrf_token %}

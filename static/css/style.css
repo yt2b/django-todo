@@ -1,0 +1,9 @@
+span {
+    display: inline-block;
+    min-width: 300px;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
