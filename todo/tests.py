@@ -16,6 +16,7 @@ class LoginTestCase(TestCase):
         # ログインページにリダイレクトされる
         response = self.client.get(reverse("index"))
         self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login") + "?next=" + reverse("index"))
         # ログイン
         login_result = self.client.login(username=self.username, password=self.password)
         self.assertTrue(login_result)
@@ -41,6 +42,7 @@ class SignupTestCase(TestCase):
         }
         response = self.client.post(reverse("signup"), data=signup_data)
         self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("index"))
         # ログイン後のページにアクセス
         response = self.client.get(reverse("index"))
         self.assertEqual(response.status_code, 200)
