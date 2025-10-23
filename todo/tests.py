@@ -27,3 +27,24 @@ class LoginTestCase(TestCase):
         response = self.client.post(reverse("logout"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "ログアウトしました")
+
+
+class SignupTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_signup(self):
+        signup_data = {
+            "username": "newuser",
+            "password1": "userpassword1234",
+            "password2": "userpassword1234",
+        }
+        response = self.client.post(reverse("signup"), data=signup_data)
+        self.assertEqual(response.status_code, 302)
+        # ログイン後のページにアクセス
+        response = self.client.get(reverse("index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "newuser のTODOリスト")
+        # データベースにユーザーが追加されている
+        user_exists = User.objects.filter(username="newuser").exists()
+        self.assertTrue(user_exists)
